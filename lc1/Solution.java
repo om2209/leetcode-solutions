@@ -22,6 +22,6 @@ class Solution {
             }
         }
 
-        return new int[] {left, right};
+        return new int[] {numsWithIndices.get(left).getValue(), numsWithIndices.get(right).getValue()};
     }
 }
