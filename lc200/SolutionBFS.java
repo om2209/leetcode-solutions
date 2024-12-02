@@ -12,28 +12,32 @@ public class SolutionBFS {
         Queue<Map.Entry<Integer, Integer>> queue = new LinkedList<>();
         queue.add(Map.entry(row, col));
 
+        int[][] directions = new int[][] {
+            {1, 0},
+            {-1, 0},
+            {0, 1},
+            {0, -1}
+        };
         while (!queue.isEmpty()) {
             Integer currentRow = queue.peek().getKey();
             Integer currentCol = queue.peek().getValue();
             queue.poll();
 
-            if ((currentRow+1)<grid.length && !visited[currentRow+1][currentCol] && grid[currentRow+1][currentCol] == '1') {
-                visited[currentRow+1][currentCol] = true;
-                queue.add(Map.entry(currentRow+1, currentCol));
-            }
-            if ((currentRow-1)>-1 && !visited[currentRow-1][currentCol] && grid[currentRow-1][currentCol] == '1') {
-                visited[currentRow-1][currentCol] = true;
-                queue.add(Map.entry(currentRow-1, currentCol));
-            }
-            if ((currentCol+1)<grid[0].length && !visited[currentRow][currentCol+1] && grid[currentRow][currentCol+1] == '1') {
-                visited[currentRow][currentCol+1] = true;
-                queue.add(Map.entry(currentRow, currentCol+1));
-            }
-            if ((currentCol-1)>-1 && !visited[currentRow][currentCol-1] && grid[currentRow][currentCol-1] == '1') {
-                visited[currentRow][currentCol-1] = true;
-                queue.add(Map.entry(currentRow, currentCol-1));
+            for (int[] direction: directions) {
+                int newRow = currentRow + direction[0];
+                int newCol = currentCol + direction[1];
+
+                if (isValid(grid, visited, newRow, newCol)) {
+                    visited[newRow][newCol] = true;
+                    queue.add(Map.entry(newRow, newCol));
+                }
             }
         }
+    }
+
+    public boolean isValid(char[][] grid, boolean[][] visited, int row, int col) {
+        return (row > -1 && row < grid.length) && (col > -1 && col < grid[0].length) && !visited[row][col] 
+                && grid[row][col] == '1'; 
     }
 
     public int numIslands(char[][] grid) {
